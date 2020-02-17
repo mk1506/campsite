@@ -31,6 +31,20 @@ public class ReservationModel {
   public ReservationModel() {
   }
 
+  public ReservationModel(String id) {
+    this.id = id;
+  }
+
+  public ReservationModel(String id, String name, String email, LocalDate arrivalDate,
+      LocalDate departureDate) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.arrivalDate = arrivalDate;
+    this.departureDate = departureDate;
+    calculateReservationDates();
+  }
+
   public String getId() {
     return id;
   }
@@ -72,13 +86,8 @@ public class ReservationModel {
   }
 
   public Set<LocalDate> getReservationDates() {
-    if(reservationDates == null){
-      reservationDates = new HashSet<>();
-      LocalDate date = getArrivalDate();
-      while (!date.isAfter(getDepartureDate())) {
-        this.reservationDates.add(date);
-        date = date.plusDays(1);
-      }
+    if (reservationDates == null) {
+      calculateReservationDates();
     }
     return reservationDates;
   }
@@ -87,7 +96,19 @@ public class ReservationModel {
     this.reservationDates = reservationDates;
   }
 
-  public static ReservationModel fromReservationRequestModel(ReservationRequestModel reservationRequest){
+  private void calculateReservationDates() {
+    if(arrivalDate !=null && departureDate !=null) {
+      reservationDates = new HashSet<>();
+      LocalDate date = arrivalDate;
+      while (!date.isAfter(departureDate)) {
+        this.reservationDates.add(date);
+        date = date.plusDays(1);
+      }
+    }
+  }
+
+  public static ReservationModel fromReservationRequestModel(
+      ReservationRequestModel reservationRequest) {
     ReservationModel reservation = new ReservationModel();
     reservation.setName(reservationRequest.getName());
     reservation.setEmail(reservationRequest.getEmail());

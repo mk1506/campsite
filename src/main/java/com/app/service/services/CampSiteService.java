@@ -26,7 +26,8 @@ public class CampSiteService {
     return campSiteReservationsRepository.getReservedDates()
         .stream().sorted()
         .filter(date -> date.isEqual(from) || date.isAfter(from))
-        .filter(date -> date.isEqual(to) || date.isBefore(to)).map(LocalDate::toString)
+        .filter(date -> date.isEqual(to) || date.isBefore(to))
+        .map(LocalDate::toString)
         .collect(Collectors.toList());
   }
 

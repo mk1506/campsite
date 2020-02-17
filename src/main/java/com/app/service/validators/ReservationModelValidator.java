@@ -22,9 +22,6 @@ public class ReservationModelValidator {
     if(reservation.getDepartureDate().isBefore(reservation.getArrivalDate())){
       throw new InvalidReservationException("departure date cannot be before arrival date");
     }
-    if(reservation.getDepartureDate().isBefore(reservation.getArrivalDate())){
-      throw new InvalidReservationException("departure date cannot be before arrival date");
-    }
     if(!LocalDate.now().isBefore(reservation.getArrivalDate())){
       throw new InvalidReservationException("Reservation must be at least 1 day in advance of arrival.");
     }

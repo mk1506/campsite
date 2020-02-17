@@ -1,9 +1,15 @@
 plugins {
     id 'java'
     id 'application'
+    id 'groovy'
+    id "com.github.johnrengelman.shadow" version "5.2.0"
 }
 
-version '1.0-SNAPSHOT'
+mainClassName = 'com.app.Main'
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+version '1.0'
 
 sourceCompatibility = 1.8
 
@@ -12,33 +18,37 @@ repositories {
 }
 
 dependencies {
-
+    compile "org.eclipse.jetty:jetty-servlet:9.4.26.v20200117"
     compile "org.jboss.resteasy:resteasy-jaxrs:3.10.0.Final"
     compile "org.jboss.resteasy:resteasy-servlet-initializer:3.10.0.Final"
     compile "org.jboss.resteasy:resteasy-guice:3.10.0.Final"
     compile "org.jboss.resteasy:resteasy-jackson2-provider:3.10.0.Final"
     compile "javax.servlet:javax.servlet-api:4.0.1"
-    compile "org.eclipse.jetty:jetty-servlet:9.4.26.v20200117"
-    compile "io.swagger:swagger-jaxrs:1.6.0"
+    compile "org.codehaus.groovy:groovy-all:3.0.0"
+    compile "org.apache.httpcomponents:httpcore-nio:4.4.13"
+    compile "org.reflections:reflections:0.9.10"
+    compile('io.swagger:swagger-jaxrs:1.5.18') {
+        exclude group: 'org.reflections', module: 'reflections'
+    }
     compile "com.google.inject:guice:4.2.2"
     compile "com.google.inject.extensions:guice-servlet:4.2.2"
     compile "com.google.inject.extensions:guice-multibindings:4.2.2"
     compile "ch.qos.logback:logback-classic:1.2.3"
+
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.2.4'
+    testCompile group: 'com.google.truth', name: 'truth', version: '1.0.1'
 
 }
-
 
 jar {
     manifest {
         attributes(
-                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
                 'Main-Class': 'com.app.Main'
         )
     }
 }
 
-sourceSets {
-    main.java.srcDir "src/main/java"
-    main.resources.srcDir "src/main/resources"
+shadowJar {
+    mergeServiceFiles()
 }
