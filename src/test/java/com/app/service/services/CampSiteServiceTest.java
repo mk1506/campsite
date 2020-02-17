@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -254,12 +255,12 @@ public class CampSiteServiceTest {
     LocalDate nextDay = LocalDate.now().plusDays(1);
     ReservationModel reservation = new ReservationModel("1", "test", "test@test", nextDay, nextDay);
 
-    int threads = 3;
+    int threads = 2;
     //mock result so that 1st thread gets the date available subsequent threads fail
-    when(reservationsRepositoryMock.isDateAvailable(nextDay)).thenReturn(true,false,false);
+    when(reservationsRepositoryMock.isDateAvailable(nextDay)).thenReturn(true,false);
 
 
-    //execute the threads at the same time, use 1 if it succeeds, 0 if it failes
+    //execute the threads at the same time, use 1 if it succeeds, 0 if it fails
     ExecutorService service =
         Executors.newFixedThreadPool(threads);
     Collection<Future<Integer>> futures =
@@ -285,6 +286,7 @@ public class CampSiteServiceTest {
       }
     }
 
+    //only 1 request should succeed as the reservatio nwas identical
     assertThat(reservations.size()).isEqualTo(1);
   }
 }
