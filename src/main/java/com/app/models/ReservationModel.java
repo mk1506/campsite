@@ -96,6 +96,7 @@ public class ReservationModel {
     this.reservationDates = reservationDates;
   }
 
+  //precomputes the dates to ease further manipulations
   private void calculateReservationDates() {
     if(arrivalDate !=null && departureDate !=null) {
       reservationDates = new HashSet<>();

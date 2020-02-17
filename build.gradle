@@ -49,6 +49,12 @@ jar {
     }
 }
 
+sourceSets {
+    test {
+        java.srcDirs = ['src/test/java']
+    }
+}
+
 shadowJar {
     mergeServiceFiles()
 }

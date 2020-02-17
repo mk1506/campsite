@@ -25,8 +25,11 @@ I have included tests for the service layer covering all of the constraints pres
 
 In a real production setting I would of course provide full test coverage and unit tests of all classes however to save time here I hope this is enough of a sample. If you wish to see full test coverage please reach out to me I can spend some more time to get it done.
 
+The included unit tests can be run by running : `gradle test`
+
+
 Concerning the Tests for load/concurrency I have included the file `JMeter-tests` with 2 relevant test groups:
 
 - Load Test Group: This sends 1000 concurrent requests to the server the *Summary Report* section will show the results of this test. I was able to run 1500+ requests with no errors. In a production environemnt I would for example run multiple replicas of this service behind a load balancer to increase capacities further if required.
 - Concurrency Test Group: This sends 10 identical create reservation events. You will see from the results that only 1 request will be successful as expected. This is achieved in this simplistic setup via the synchronized keyword on operations that must be thread safe. 
-   - Note you will have to update the date of the reservation for the requests in this test depending nn when you run it.
+   - Note you will have to update the date of the reservation for the requests in this test depending on when you run it.
